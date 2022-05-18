@@ -1,19 +1,97 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"net/http"
-	"os"
+	"time"
 )
 
+var ctx = context.Background()
+
+type TMessage struct {
+	FirstKey    string
+	SecondKey   string
+	Name        string
+	PhoneNumber string
+	ICQ         string
+	LastKey     int64
+}
+
 func main() {
-	client := http.Client{}
+	// rdb := redis.NewClient(&redis.Options{
+	// 	Addr:     "localhost:6379",
+	// 	Password: "", // no password set
+	// 	DB:       0,  // use default DB
+	// })
+
+	// userid := "root25"
+	// currentusertoken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBVFRFTlRJT04hIjoi0J_RgNC40LLQtdGCLCDQnNCw0LrRgSA6KSIsIkRhdGEgYW5zd2VyIGlzIjoiMjExIiwiVG9rZW4gcmVxdWVzdCBhdCI6IjIwMjItMDUtMTJUMjI6MDI6MDMuNDIzNTc1NCswNTowMCIsImFkbWluIHBlcm1pc3Npb25zPyI6Im1heWJlIiwiZXhwIjoxNjUyMzc1NTIzLCJsb2dpbiI6InJvb3QifQ.9do8soXtimGxr9TDAd6EI2W0l-95U0SSJD_5GPz4kMA"
+
+	// node := rdb.Set(ctx, userid, currentusertoken, 0).Err()
+	// if node != nil {
+	// 	panic(node)
+	// }
+
+	// // err = rdb.Set(ctx, "key2", "74", 0).Err()
+	// // if err != nil {
+	// // 	panic(err)
+	// // }
+
+	// val, node := rdb.Get(ctx, userid).Result()
+	// if node == redis.Nil {
+	// 	fmt.Println("key1 does not exist")
+	// } else if node != nil {
+	// 	panic(node)
+	// } else {
+	// 	fmt.Println(userid, val)
+	// }
+	// // val, err := rdb.Get(ctx, "key").Result()
+	// // if err != nil {
+	// // 	panic(err)
+	// // }
+	// // fmt.Println("key", val)
+
+	// val2, node := rdb.Get(ctx, "key2").Result()
+	// if node == redis.Nil {
+	// 	fmt.Println("key2 does not exist")
+	// } else if node != nil {
+	// 	panic(node)
+	// } else {
+	// 	fmt.Println("key2", val2)
+	// }
+	// Output: key value
+	// key2 does not exist
+	client := http.Client{
+		Timeout: 6 * time.Second,
+	}
 	resp, err := client.Get("http://localhost:3000/get-token?login=root111&password=1111&data=21")
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("это место?", err)
 		return
 	}
 	defer resp.Body.Close()
-	io.Copy(os.Stdout, resp.Body)
+	// io.Copy(os.Stdout, resp.Body)
+
+	body, err := ioutil.ReadAll(resp.Body)
+	bodyString := string(body)
+
+	// newToken := resp.Body
+	// osStdout := os.Stdout
+	fmt.Println("this", bodyString)
+	// newTokenToRedis := rdb.Set(ctx, userid, newToken, 0).Err()
+	// if newTokenToRedis != nil {
+	// 	panic(newTokenToRedis)
+	// }
+
+	// tokenFromRedis, newTokenToRedis := rdb.Get(ctx, "userid").Result()
+	// if newTokenToRedis == redis.Nil {
+	// 	fmt.Println("userid does not exist")
+	// } else if newTokenToRedis != nil {
+	// 	panic(newTokenToRedis)
+	// } else {
+	// 	fmt.Println("userid", tokenFromRedis)
+	// }
+
 }
