@@ -2,10 +2,14 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
+	"github.com/go-redis/redis/v8"
+
+	"github.com/ev/myhttpclient/POSTRequests"
 )
 
 var ctx = context.Background()
@@ -17,6 +21,15 @@ type TMessage struct {
 	PhoneNumber string
 	ICQ         string
 	LastKey     int64
+}
+
+type Gettokenanswerstruct struct {
+	TokenRequestAt string
+	User           string
+	Login          string
+	Password       string
+	DataAnswer     string
+	Token          string
 }
 
 func main() {
@@ -68,18 +81,40 @@ func main() {
 	}
 	resp, err := client.Get("http://localhost:3000/get-token?login=root111&password=1111&data=21")
 	if err != nil {
-		fmt.Println("это место?", err)
+		fmt.Println(err)
 		return
 	}
 	defer resp.Body.Close()
 	// io.Copy(os.Stdout, resp.Body)
 
 	body, err := ioutil.ReadAll(resp.Body)
-	bodyString := string(body)
+	if err != nil {
+		panic(err)
+	}
+	// bodyString := string(body)
+
+	var Gettokenanswer = &Gettokenanswerstruct{}
+	json.Unmarshal([]byte(body), Gettokenanswer)
+
+	func (p *PostMessageEndpoint) handler(w http.ResponseWriter, r *http.Request) {
+		message := types.Message{}
+		err := http_helper.HttpHelper{}.DecodePostRequest(r, &message)
+		if err != nil {
+		  p.log.Error("can not decode post message", logger.NewParameter("request", r.GetBody))
+		  return
+		}
+		fmt.Println(message)
+	//var Gettokenanswer = Gettokenanswerstruct{bodyString.Token}
 
 	// newToken := resp.Body
 	// osStdout := os.Stdout
-	fmt.Println("this", bodyString)
+	fmt.Println(Gettokenanswer.Token)
+
+
+
+
+
+
 	// newTokenToRedis := rdb.Set(ctx, userid, newToken, 0).Err()
 	// if newTokenToRedis != nil {
 	// 	panic(newTokenToRedis)

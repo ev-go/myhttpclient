@@ -1,4 +1,4 @@
-module myhttpclient
+module github.com/ev/myhttpclient
 
 go 1.14
 
