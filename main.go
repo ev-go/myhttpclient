@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	http_helper "github.com/ev/myhttpclient/POSTRequests"
+	http_helper "github.com/ev-go/myhttpclient/POSTRequests"
 
 	My_redis "github.com/ev-go/myhttp3authjson/Cache"
 	"github.com/go-redis/redis/v8"
