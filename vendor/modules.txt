@@ -2,6 +2,9 @@
 github.com/cespare/xxhash/v2
 # github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f
 github.com/dgryski/go-rendezvous
+# github.com/ev-go/myhttp3authjson v0.0.0-20220519191100-813e4bb7738b
+## explicit
+github.com/ev-go/myhttp3authjson/Cache
 # github.com/go-redis/redis/v8 v8.11.5
 ## explicit
 github.com/go-redis/redis/v8
