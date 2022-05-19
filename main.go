@@ -9,6 +9,8 @@ import (
 	"time"
 
 	http_helper "github.com/ev/myhttpclient/POSTRequests"
+
+	My_redis "github.com/ev-go/myhttp3authjson/Cache"
 	"github.com/go-redis/redis/v8"
 )
 
@@ -33,6 +35,8 @@ type Gettokenanswerstruct struct {
 }
 
 func main() {
+	My_redis.Main()
+
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
 		Password: "", // no password set
@@ -77,6 +81,7 @@ func main() {
 
 	// Output: key value
 	// key2 does not exist
+
 	client := http.Client{
 		Timeout: 6 * time.Second,
 	}
