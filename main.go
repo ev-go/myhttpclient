@@ -7,9 +7,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
-	"github.com/go-redis/redis/v8"
 
-	"github.com/ev/myhttpclient/POSTRequests"
+	http_helper "github.com/ev/myhttpclient/POSTRequests"
+	"github.com/go-redis/redis/v8"
 )
 
 var ctx = context.Background()
@@ -33,47 +33,48 @@ type Gettokenanswerstruct struct {
 }
 
 func main() {
-	// rdb := redis.NewClient(&redis.Options{
-	// 	Addr:     "localhost:6379",
-	// 	Password: "", // no password set
-	// 	DB:       0,  // use default DB
-	// })
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
 
-	// userid := "root25"
-	// currentusertoken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBVFRFTlRJT04hIjoi0J_RgNC40LLQtdGCLCDQnNCw0LrRgSA6KSIsIkRhdGEgYW5zd2VyIGlzIjoiMjExIiwiVG9rZW4gcmVxdWVzdCBhdCI6IjIwMjItMDUtMTJUMjI6MDI6MDMuNDIzNTc1NCswNTowMCIsImFkbWluIHBlcm1pc3Npb25zPyI6Im1heWJlIiwiZXhwIjoxNjUyMzc1NTIzLCJsb2dpbiI6InJvb3QifQ.9do8soXtimGxr9TDAd6EI2W0l-95U0SSJD_5GPz4kMA"
+	userid := "root25"
+	currentusertoken := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBVFRFTlRJT04hIjoi0J_RgNC40LLQtdGCLCDQnNCw0LrRgSA6KSIsIkRhdGEgYW5zd2VyIGlzIjoiMjExIiwiVG9rZW4gcmVxdWVzdCBhdCI6IjIwMjItMDUtMTJUMjI6MDI6MDMuNDIzNTc1NCswNTowMCIsImFkbWluIHBlcm1pc3Npb25zPyI6Im1heWJlIiwiZXhwIjoxNjUyMzc1NTIzLCJsb2dpbiI6InJvb3QifQ.9do8soXtimGxr9TDAd6EI2W0l-95U0SSJD_5GPz4kMA"
 
-	// node := rdb.Set(ctx, userid, currentusertoken, 0).Err()
-	// if node != nil {
-	// 	panic(node)
+	node := rdb.Set(ctx, userid, currentusertoken, 0).Err()
+	if node != nil {
+		panic(node)
+	}
+
+	// err = rdb.Set(ctx, "key2", "74", 0).Err()
+	// if err != nil {
+	// 	panic(err)
 	// }
 
-	// // err = rdb.Set(ctx, "key2", "74", 0).Err()
-	// // if err != nil {
-	// // 	panic(err)
-	// // }
-
-	// val, node := rdb.Get(ctx, userid).Result()
-	// if node == redis.Nil {
-	// 	fmt.Println("key1 does not exist")
-	// } else if node != nil {
-	// 	panic(node)
-	// } else {
-	// 	fmt.Println(userid, val)
+	val, node := rdb.Get(ctx, userid).Result()
+	if node == redis.Nil {
+		fmt.Println("key1 does not exist")
+	} else if node != nil {
+		panic(node)
+	} else {
+		fmt.Println(userid, val)
+	}
+	// val, err := rdb.Get(ctx, "key").Result()
+	// if err != nil {
+	// 	panic(err)
 	// }
-	// // val, err := rdb.Get(ctx, "key").Result()
-	// // if err != nil {
-	// // 	panic(err)
-	// // }
-	// // fmt.Println("key", val)
+	// fmt.Println("key", val)
 
-	// val2, node := rdb.Get(ctx, "key2").Result()
-	// if node == redis.Nil {
-	// 	fmt.Println("key2 does not exist")
-	// } else if node != nil {
-	// 	panic(node)
-	// } else {
-	// 	fmt.Println("key2", val2)
-	// }
+	val2, node := rdb.Get(ctx, "key2").Result()
+	if node == redis.Nil {
+		fmt.Println("key2 does not exist")
+	} else if node != nil {
+		panic(node)
+	} else {
+		fmt.Println("key2", val2)
+	}
+
 	// Output: key value
 	// key2 does not exist
 	client := http.Client{
@@ -96,25 +97,14 @@ func main() {
 	var Gettokenanswer = &Gettokenanswerstruct{}
 	json.Unmarshal([]byte(body), Gettokenanswer)
 
-	func (p *PostMessageEndpoint) handler(w http.ResponseWriter, r *http.Request) {
-		message := types.Message{}
-		err := http_helper.HttpHelper{}.DecodePostRequest(r, &message)
-		if err != nil {
-		  p.log.Error("can not decode post message", logger.NewParameter("request", r.GetBody))
-		  return
-		}
-		fmt.Println(message)
+	// }
+	// fmt.Println(message)
+
 	//var Gettokenanswer = Gettokenanswerstruct{bodyString.Token}
 
 	// newToken := resp.Body
 	// osStdout := os.Stdout
 	fmt.Println(Gettokenanswer.Token)
-
-
-
-
-
-
 	// newTokenToRedis := rdb.Set(ctx, userid, newToken, 0).Err()
 	// if newTokenToRedis != nil {
 	// 	panic(newTokenToRedis)
@@ -129,4 +119,13 @@ func main() {
 	// 	fmt.Println("userid", tokenFromRedis)
 	// }
 
+}
+
+func (p *PostMessageEndpoint) handler(w http.ResponseWriter, r *http.Request) {
+	message := types.Message{}
+	err := http_helper.HttpHelper{}.DecodePostRequest(r, &message)
+	if err != nil {
+		p.log.Error("can not decode post message", logger.NewParameter("request", r.GetBody))
+		return
+	}
 }
