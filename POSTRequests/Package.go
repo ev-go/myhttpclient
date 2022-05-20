@@ -16,3 +16,11 @@ func (h HttpHelper) DecodePostRequest(r *http.Request, obj interface{}) error {
 	}
 	return nil
 }
+
+// func (p *PostMessageEndpoint) handler(w http.ResponseWriter, r *http.Request) {
+// 	message := types.Message{}
+// 	err := http_helper.HttpHelper{}.DecodePostRequest(r, &message)
+// 	if err != nil {
+// 		p.log.Error("can not decode post message", logger.NewParameter("request", r.GetBody))
+// 		return
+// 	}

@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"time"
 
-	http_helper "github.com/ev-go/myhttpclient/POSTRequests"
-
 	My_redis "github.com/ev-go/myhttp3authjson/Cache"
 	"github.com/go-redis/redis/v8"
 )
@@ -34,8 +32,27 @@ type Gettokenanswerstruct struct {
 	Token          string
 }
 
+// func (p *Gettokenanswerstruct) handler(w http.ResponseWriter, r *http.Request) {
+// 	message := types.Message{}
+// 	err := http_helper.HttpHelper{}.DecodePostRequest(r, &message)
+// 	if err != nil {
+// 		fmt.Println("can not decode post message", r.GetBody)
+// 		return
+// 	}
+// }
+
+// type httprequeststruct struct {
+// 	Url string
+// }
+
 func main() {
 	My_redis.Main()
+
+	// // http_helper.HttpHelper("http://localhost:3000/get-token?login=root111&password=1111&data=21")
+
+	// httprequest := httprequeststruct{"http://localhost:3000/get-token?login=root111&password=1111&data=21"}
+	// message := Gettokenanswerstruct{}
+	// http_helper.HttpHelper{}.DecodePostRequest(httprequest, &message)
 
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
@@ -101,6 +118,8 @@ func main() {
 
 	var Gettokenanswer = &Gettokenanswerstruct{}
 	json.Unmarshal([]byte(body), Gettokenanswer)
+	// fmt.Println(Gettokenanswer.Token)
+	// fmt.Println(Gettokenanswerstruct)
 
 	// }
 	// fmt.Println(message)
@@ -109,7 +128,7 @@ func main() {
 
 	// newToken := resp.Body
 	// osStdout := os.Stdout
-	fmt.Println(Gettokenanswer.Token)
+
 	// newTokenToRedis := rdb.Set(ctx, userid, newToken, 0).Err()
 	// if newTokenToRedis != nil {
 	// 	panic(newTokenToRedis)
@@ -124,13 +143,19 @@ func main() {
 	// 	fmt.Println("userid", tokenFromRedis)
 	// }
 
-}
+	// PostMessageEndpoint := "http://localhost:3000/get-token?login=root111&password=1111&data=21"
 
-func (p *PostMessageEndpoint) handler(w http.ResponseWriter, r *http.Request) {
-	message := types.Message{}
-	err := http_helper.HttpHelper{}.DecodePostRequest(r, &message)
-	if err != nil {
-		p.log.Error("can not decode post message", logger.NewParameter("request", r.GetBody))
-		return
+	
+
+	func (p *PostMessageEndpoint) handler(w http.ResponseWriter, r *http.Request) {
+		message := Gettokenanswerstruct{}
+		err := http_helper.HttpHelper{}.DecodePostRequest(r, &message)
+		if err != nil {
+			fmt.Println("can not decode post message", r.GetBody)
+			return
+		}
 	}
+
+	// fmt.Println(PostMessage("http://localhost:3000/get-token?login=root111&password=1111&data=21"))
+
 }
