@@ -100,7 +100,7 @@ func main() {
 	// key2 does not exist
 
 	client := http.Client{
-		Timeout: 6 * time.Second,
+		Timeout: time.Duration(6) * time.Second,
 	}
 	resp, err := client.Get("http://localhost:3000/get-token?login=root111&password=1111&data=21")
 	if err != nil {
@@ -116,9 +116,11 @@ func main() {
 	}
 	// bodyString := string(body)
 
+	fmt.Printf("Body blog.logrocket.com : %s", body)
+
 	var Gettokenanswer = &Gettokenanswerstruct{}
 	json.Unmarshal([]byte(body), Gettokenanswer)
-	// fmt.Println(Gettokenanswer.Token)
+	fmt.Println("token from struct:", Gettokenanswer.Token)
 	// fmt.Println(Gettokenanswerstruct)
 
 	// }
@@ -145,16 +147,14 @@ func main() {
 
 	// PostMessageEndpoint := "http://localhost:3000/get-token?login=root111&password=1111&data=21"
 
-	
-
-	func (p *PostMessageEndpoint) handler(w http.ResponseWriter, r *http.Request) {
-		message := Gettokenanswerstruct{}
-		err := http_helper.HttpHelper{}.DecodePostRequest(r, &message)
-		if err != nil {
-			fmt.Println("can not decode post message", r.GetBody)
-			return
-		}
-	}
+	// func (p *PostMessageEndpoint) handler(w http.ResponseWriter, r *http.Request) {
+	// 	message := Gettokenanswerstruct{}
+	// 	err := http_helper.HttpHelper{}.DecodePostRequest(r, &message)
+	// 	if err != nil {
+	// 		fmt.Println("can not decode post message", r.GetBody)
+	// 		return
+	// 	}
+	// }
 
 	// fmt.Println(PostMessage("http://localhost:3000/get-token?login=root111&password=1111&data=21"))
 
