@@ -2,11 +2,9 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"time"
 
 	My_redis "github.com/ev-go/myhttp3authjson/Cache"
@@ -99,30 +97,30 @@ func main() {
 
 	// Output: key value
 	// key2 does not exist
+	///////////
+	// client := http.Client{
+	// 	Timeout: time.Duration(6) * time.Second,
+	// }
+	// resp, err := client.Get("http://localhost:3000/get-token?login=root111&password=1111&data=21")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
+	// defer resp.Body.Close()
+	// // io.Copy(os.Stdout, resp.Body)
 
-	client := http.Client{
-		Timeout: time.Duration(6) * time.Second,
-	}
-	resp, err := client.Get("http://localhost:3000/get-token?login=root111&password=1111&data=21")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	defer resp.Body.Close()
-	// io.Copy(os.Stdout, resp.Body)
+	// body, err := ioutil.ReadAll(resp.Body)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// // bodyString := string(body)
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		panic(err)
-	}
-	// bodyString := string(body)
+	// fmt.Printf("Body blog.logrocket.com : %s", body)
 
-	fmt.Printf("Body blog.logrocket.com : %s", body)
-
-	var Gettokenanswer = &Gettokenanswerstruct{}
-	json.Unmarshal([]byte(body), Gettokenanswer)
-	fmt.Println("token from struct:", Gettokenanswer.Token)
-
+	// var Gettokenanswer = &Gettokenanswerstruct{}
+	// json.Unmarshal([]byte(body), Gettokenanswer)
+	// fmt.Println("token from struct:", Gettokenanswer.Token)
+	//////////
 	// respo, erro := client.Get("http://localhost:3000/products")
 	// if erro != nil {
 	// 	fmt.Println(erro)
@@ -137,24 +135,40 @@ func main() {
 	// // bodyString := string(body)
 
 	// fmt.Printf("Body blog.logrocket.com : %s", bodyo)
+	bearer := "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBVFRFTlRJT04hIjoi0J_RgNC40LLQtdGCLCDQnNCw0LrRgSA6KSIsIkRhdGEgYW5zd2VyIGlzIjoiMjExIiwiVG9rZW4gcmVxdWVzdCBhdCI6IjIwMjItMDUtMjNUMjM6MTU6MTIuMDEwMDU2OSswNTowMCIsImFkbWluIHBlcm1pc3Npb25zPyI6Im1heWJlIiwiZXhwIjoxNjUzMzk0NTEyLCJsb2dpbiI6InJvb3QyIn0.yRet-1pvT9Pr-ZLXhBulNZ2O2PQfMRbf-L7tEbHcHuo"
+	client := http.Client{Timeout: 5 * time.Second}
+	request, err := http.NewRequest("GET", "http://localhost:3000/products", nil)
+	request.Header.Add("Authorization", bearer)
+	request.Header.Add("Content-Type", `application/json`)
+	if err != nil {
+		panic(err)
+	}
+	// defer request.Body.Close() /where to add this?
 
-	req, erro := http.NewRequest("GET", "http://localhost:3000/products", resp.Body)
-	req.Header.Set("Content-Type", `application/json`)
-	req.Header.Set("Authorization", os.Getenv("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBVFRFTlRJT04hIjoi0J_RgNC40LLQtdGCLCDQnNCw0LrRgSA6KSIsIkRhdGEgYW5zd2VyIGlzIjoiMjExIiwiVG9rZW4gcmVxdWVzdCBhdCI6IjIwMjItMDUtMTJUMjI6MDI6MDMuNDIzNTc1NCswNTowMCIsImFkbWluIHBlcm1pc3Npb25zPyI6Im1heWJlIiwiZXhwIjoxNjUyMzc1NTIzLCJsb2dpbiI6InJvb3QifQ.9do8soXtimGxr9TDAd6EI2W0l-95U0SSJD_5GPz4kMA"))
-	if erro != nil {
-		fmt.Println("erro")
-		fmt.Println(erro)
-		return
+	response, err := client.Do(request)
+	if err != nil {
+		panic(err)
 	}
-	defer req.Body.Close()
+	responseData, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("response?:", string(responseData))
+	// if err != nil {
+	// 	fmt.Println("err")
+	// 	fmt.Println(err)
+	// 	return
+	// }
+	//defer request.Body.Close()
 	// io.Copy(os.Stdout, req.Body)
-	bodyprod, erra := ioutil.ReadAll(req.Body)
-	if erra != nil {
-		fmt.Println("bodyprod error")
-		panic(erra)
-	}
-	bodyprodString := string(bodyprod)
-	fmt.Println(bodyprodString)
+	// bodyprod, erra := ioutil.ReadAll(request.Body)
+	// if erra != nil {
+	// 	fmt.Println("bodyprod error")
+	// 	panic(erra)
+	// }
+	// bodyprodString := string(bodyprod)
+	// fmt.Println(bodyprodString)
 
 	// }
 	// fmt.Println(message)
