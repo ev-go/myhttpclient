@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 
 	My_redis "github.com/ev-go/myhttp3authjson/Cache"
@@ -121,7 +122,39 @@ func main() {
 	var Gettokenanswer = &Gettokenanswerstruct{}
 	json.Unmarshal([]byte(body), Gettokenanswer)
 	fmt.Println("token from struct:", Gettokenanswer.Token)
-	// fmt.Println(Gettokenanswerstruct)
+
+	// respo, erro := client.Get("http://localhost:3000/products")
+	// if erro != nil {
+	// 	fmt.Println(erro)
+	// 	return
+	// }
+	// defer respo.Body.Close()
+
+	// bodyo, err := ioutil.ReadAll(respo.Body)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// // bodyString := string(body)
+
+	// fmt.Printf("Body blog.logrocket.com : %s", bodyo)
+
+	req, erro := http.NewRequest("GET", "http://localhost:3000/products", resp.Body)
+	req.Header.Set("Content-Type", `application/json`)
+	req.Header.Set("Authorization", os.Getenv("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBVFRFTlRJT04hIjoi0J_RgNC40LLQtdGCLCDQnNCw0LrRgSA6KSIsIkRhdGEgYW5zd2VyIGlzIjoiMjExIiwiVG9rZW4gcmVxdWVzdCBhdCI6IjIwMjItMDUtMTJUMjI6MDI6MDMuNDIzNTc1NCswNTowMCIsImFkbWluIHBlcm1pc3Npb25zPyI6Im1heWJlIiwiZXhwIjoxNjUyMzc1NTIzLCJsb2dpbiI6InJvb3QifQ.9do8soXtimGxr9TDAd6EI2W0l-95U0SSJD_5GPz4kMA"))
+	if erro != nil {
+		fmt.Println("erro")
+		fmt.Println(erro)
+		return
+	}
+	defer req.Body.Close()
+	// io.Copy(os.Stdout, req.Body)
+	bodyprod, erra := ioutil.ReadAll(req.Body)
+	if erra != nil {
+		fmt.Println("bodyprod error")
+		panic(erra)
+	}
+	bodyprodString := string(bodyprod)
+	fmt.Println(bodyprodString)
 
 	// }
 	// fmt.Println(message)
