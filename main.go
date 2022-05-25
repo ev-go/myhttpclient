@@ -149,6 +149,12 @@ func main() {
 			requestUseData = "data=" + readFromTerminal
 			fmt.Println("\nData changed for:", requestUseData)
 		}
+		if readFromTerminal == "port" {
+			fmt.Println("\nEnter new port")
+			fmt.Scanf("%s\n", &readFromTerminal)
+			requestUsePort = ":" + readFromTerminal
+			fmt.Println("\nPort changed for:", requestUsePort)
+		}
 	} else {
 		fmt.Println("No changes")
 	}
