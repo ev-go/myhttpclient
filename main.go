@@ -99,10 +99,69 @@ func main() {
 	// Output: key value
 	// key2 does not exist
 	///////////
+
+	requestUseUrl := "http://localhost"
+	requestUsePort := ":3000"
+	requestUseRout := "/get-token"
+	requestUseLogin := "login=root"
+	requestUsePassword := "password=1"
+	requestUseData := "data=21"
+
+	httpRequestString := requestUseUrl + requestUsePort + requestUseRout + "?" + requestUseLogin + "&" + requestUsePassword + "&" + requestUseData
+	// Menu
+	fmt.Println("\n********************************/ Menu /****************************************")
+	fmt.Println("\nThis is client for sending http requests to server")
+	fmt.Println("\nDefault URL: ", requestUseUrl, ";",
+		"\nDefault Port: ", requestUsePort, ";",
+		"\nDefault Rout: ", requestUseRout, ";",
+		"\nDefault Login: ", requestUseLogin, ";",
+		"\nDefault Password: ", requestUsePassword, ";",
+		"\nDefault Data: ", requestUseData, ";",
+		"\nDefault http request: ", httpRequestString, ";")
+
+	// fmt.Println("Логин")
+	// fmt.Scanf("%s\n", &Log)
+
+	// fmt.Println("Пароль")
+	// fmt.Scanf("%s\n", &Pass)
+	var readFromTerminal string
+	fmt.Println("\nDo you want to change defaults? (y/n)")
+	fmt.Scanf("%s\n", &readFromTerminal)
+	if readFromTerminal == "y" {
+		fmt.Println("\nWhat part of http request need to change?",
+			"Write in terminal: 'url' or 'port' or 'rout' or 'login' or 'password' or 'data'")
+		fmt.Scanf("%s\n", &readFromTerminal)
+		if readFromTerminal == "login" {
+			fmt.Println("\nEnter new login")
+			fmt.Scanf("%s\n", &readFromTerminal)
+			requestUseLogin = "login=" + readFromTerminal
+			fmt.Println("\nLogin changed for:", requestUseLogin)
+		}
+		if readFromTerminal == "password" {
+			fmt.Println("\nEnter new password")
+			fmt.Scanf("%s\n", &readFromTerminal)
+			requestUsePassword = "password=" + readFromTerminal
+			fmt.Println("\nPassword changed for:", requestUsePassword)
+		}
+		if readFromTerminal == "data" {
+			fmt.Println("\nEnter new data")
+			fmt.Scanf("%s\n", &readFromTerminal)
+			requestUseData = "data=" + readFromTerminal
+			fmt.Println("\nData changed for:", requestUseData)
+		}
+	} else {
+		fmt.Println("No changes")
+	}
+	httpRequestString = requestUseUrl + requestUsePort + requestUseRout + "?" + requestUseLogin + "&" + requestUsePassword + "&" + requestUseData
+
+	fmt.Println("\n******************************/ Menu End /**************************************")
+	//Menu end
+	//	"http://localhost:3000/get-token?login=root111&password=1111&data=21"
+
 	client := http.Client{
 		Timeout: time.Duration(6) * time.Second,
 	}
-	resp, err := client.Get("http://localhost:3000/get-token?login=root2&password=2&data=21")
+	resp, err := client.Get(httpRequestString)
 	if err != nil {
 		fmt.Println(err)
 		return
