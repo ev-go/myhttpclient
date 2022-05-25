@@ -136,7 +136,7 @@ func main() {
 	// // bodyString := string(body)
 
 	// fmt.Printf("Body blog.logrocket.com : %s", bodyo)
-	bearer := "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBVFRFTlRJT04hIjoi0J_RgNC40LLQtdGCLCDQnNCw0LrRgSA6KSIsIkRhdGEgYW5zd2VyIGlzIjoiMjExIiwiVG9rZW4gcmVxdWVzdCBhdCI6IjIwMjItMDUtMjRUMjI6MzM6NTkuMDY5ODcwNyswNTowMCIsImFkbWluIHBlcm1pc3Npb25zPyI6Im1heWJlIiwiZXhwIjoxNjUzNDc4NDM5LCJsb2dpbiI6InJvb3QyIn0.IZV4284A8Ss9bnlsRe_WTZr2l7XEtioXbG_m9pLQtQY"
+	bearer := "Bearer " + Gettokenanswer.Token
 	cli := http.Client{Timeout: 5 * time.Second}
 	request, err := http.NewRequest("GET", "http://localhost:3000/products", nil)
 	request.Header.Add("Authorization", bearer)
