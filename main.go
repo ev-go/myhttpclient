@@ -181,11 +181,11 @@ func main() {
 	}
 	// bodyString := string(body)
 
-	fmt.Printf("Body blog.logrocket.com : %s\t", body)
+	fmt.Printf("\nAnswer for request : %s\t", body)
 
 	var Gettokenanswer = &Gettokenanswerstruct{}
 	json.Unmarshal([]byte(body), Gettokenanswer)
-	fmt.Println("token from struct:", Gettokenanswer.Token)
+	fmt.Println("\ntoken from struct:", Gettokenanswer.Token)
 	//////////
 	// respo, erro := client.Get("http://localhost:3000/products")
 	// if erro != nil {
@@ -220,7 +220,7 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println("response?:", string(responseData))
+	fmt.Println("\nresponse?:", string(responseData))
 	// if err != nil {
 	// 	fmt.Println("err")
 	// 	fmt.Println(err)
