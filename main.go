@@ -32,6 +32,20 @@ type Gettokenanswerstruct struct {
 	Token          string
 }
 
+// type httpRequestMessageStruct struct {
+// 	requestUseLogin
+// 	requestUsePassword
+// 	requestUseData
+// }
+
+// type httpRequestStruct struct {
+// 	requestUseUrl string
+// 	requestUsePort string
+// 	requestUseRout string
+// 	httpRequestMessage httpRequestMessageStruct
+// }
+
+// requestUseUrl + requestUsePort + requestUseRout + "?" + requestUseLogin + "&" + requestUsePassword + "&" + requestUseData
 // func (p *Gettokenanswerstruct) handler(w http.ResponseWriter, r *http.Request) {
 // 	message := types.Message{}
 // 	err := http_helper.HttpHelper{}.DecodePostRequest(r, &message)
@@ -103,7 +117,7 @@ func main() {
 	requestUseUrl := "http://localhost"
 	requestUsePort := ":3000"
 	requestUseRout := "/get-token"
-	requestUseLogin := "login=root"
+	requestUseLogin := "login=root1"
 	requestUsePassword := "password=1"
 	requestUseData := "data=21"
 
